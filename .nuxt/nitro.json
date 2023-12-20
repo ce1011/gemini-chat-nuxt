@@ -1,0 +1,14 @@
+{
+  "date": "2023-12-20T17:29:01.057Z",
+  "preset": "nitro-dev",
+  "framework": {
+    "name": "nuxt",
+    "version": "3.8.2"
+  },
+  "versions": {
+    "nitro": "2.8.1"
+  },
+  "dev": {
+    "pid": 46955
+  }
+}
