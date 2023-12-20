@@ -1,15 +1,16 @@
-<template>
+<template >
+  <div class="flex justify-between h-screen flex-col">        
   <div>
-    <div class="flex items-start gap-2.5">
+    <div class="grid grid-6 items-start gap-5 max-h-[90vh] overflow-auto">
 
       <div v-for="message in history"
-        class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700"
+        class="flex w-full max-w-xl leading-1.5 p-4 border-gray-200 bg-gray-100 rounded-e-xl rounded-es-xl dark:bg-gray-700"
       >
-        <div class="flex items-center space-x-2 rtl:space-x-reverse">
+        <div class="flex items-center space-x-2 mr-5 rtl:space-x-reverse">
           <span class="text-sm font-semibold text-gray-900 dark:text-white"
             >{{message.role }}</span
           >
-          <span class="text-sm font-normal text-gray-500 dark:text-gray-400"
+          <span class="text-sm font-normal  text-gray-500 dark:text-gray-400"
             >11:46</span
           >
         </div>
@@ -17,7 +18,10 @@
       </div>
     </div>
       <label for="chat" class="sr-only">Your message</label>
-      <div
+
+   
+  </div>
+  <div
         class="flex items-center px-3 py-2 rounded-lg bg-gray-50 dark:bg-gray-700"
       >
         <textarea
@@ -46,8 +50,7 @@
           <span class="sr-only">Send message</span>
         </button>
       </div>
-   
-  </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -58,9 +61,11 @@ import MarkdownRenderer from './components/markdownRenderer.vue';
 const history = ref<Conversation[]>([]);
 const askContent = ref<string>('');
 
-console.log(process.env.GEMINI_API_KEY)
+const allowAsk = ref<boolean>(true);
 
 async function ask(chatHistory : Conversation[], ask : string){
+if(!allowAsk.value) return;
+
   const askReq : AskRequest = {
     ask: askContent.value,
     history: cloneDeep(chatHistory),
@@ -70,6 +75,8 @@ async function ask(chatHistory : Conversation[], ask : string){
     role: Role.User,
     parts: askContent.value,
   });
+
+  allowAsk.value = false;
 
   askContent.value = '';
 
@@ -86,6 +93,8 @@ async function ask(chatHistory : Conversation[], ask : string){
     role: Role.Model,
     parts: response,
   });
+
+  allowAsk.value = true;
 }
 
 </script>
