@@ -80,7 +80,7 @@ if(!allowAsk.value) return;
 
   askContent.value = '';
 
-  const response : string = await $fetch('http://localhost:3000/api/ask', {
+  const response : string = await $fetch('api/ask', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
